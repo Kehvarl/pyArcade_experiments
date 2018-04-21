@@ -34,7 +34,7 @@ class ArcadeDemo(arcade.Window):
     with your own code. Don't leave 'pass' in this program.
     """
 
-    def __init__(self, width, height, game_map):
+    def __init__(self, width, height, dungeon):
         super().__init__(width, height, "Roguelike Demo", resizable=True)
 
         arcade.set_background_color(arcade.color.BLACK)
@@ -46,12 +46,13 @@ class ArcadeDemo(arcade.Window):
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
 
-        self.game_map = game_map
+        self.dungeon = dungeon
 
         # If you have sprite lists, you should create them here,
         # and set them to None
         self.map_list = None
         self.wall_textures = None
+        self.fill_textures = None
         self.floor_textures = None
 
     def setup(self):
@@ -70,6 +71,16 @@ class ArcadeDemo(arcade.Window):
         self.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_4.png",
                                                       scale=SPRITE_SCALING))
 
+        self.fill_textures = []
+        self.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_0.png",
+                                                      scale=SPRITE_SCALING))
+        self.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_1.png",
+                                                      scale=SPRITE_SCALING))
+        self.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_2.png",
+                                                      scale=SPRITE_SCALING))
+        self.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_3.png",
+                                                      scale=SPRITE_SCALING))
+
         self.floor_textures = []
         self.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_10.png",
                                                        scale=SPRITE_SCALING))
@@ -82,11 +93,19 @@ class ArcadeDemo(arcade.Window):
         self.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_14.png",
                                                        scale=SPRITE_SCALING))
 
+        self._load_map()
+
+    def _load_map(self):
+        self.dungeon.generate(max_rooms=10)
+        self.map_list = arcade.SpriteList()
         for y in range(MAZE_HEIGHT):
             for x in range(MAZE_WIDTH):
                 map_tile = arcade.Sprite()
-                if self.game_map.tiles[x][y].block_sight:
-                    map_tile.texture = random.choice(self.wall_textures)
+                if self.dungeon.game_map.tiles[x][y].block_sight:
+                    if self.dungeon.game_map.tiles[x][y].wall:
+                        map_tile.texture = random.choice(self.wall_textures)
+                    else:
+                        map_tile.texture = random.choice(self.fill_textures)
                 else:
                     map_tile.texture = random.choice(self.floor_textures)
                 map_tile.center_x = x * SPRITE_SIZE + SPRITE_SIZE / 2
@@ -145,7 +164,7 @@ class ArcadeDemo(arcade.Window):
         """
         Called when a user releases a mouse button.
         """
-        pass
+        self._load_map()
 
 
 def main():
@@ -156,7 +175,6 @@ def main():
 if __name__ == "__main__":
     test_map = GameMap(40, 30)
     dungeon = TutorialDungeon(test_map)
-    dungeon.generate(max_rooms=10)
-    game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, dungeon.game_map)
+    game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, dungeon)
     game.setup()
     arcade.run()

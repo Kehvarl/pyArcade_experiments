@@ -32,6 +32,8 @@ class TutorialDungeon:
         :param int room_max_size: Largest allowable room (width or height)
         """
         num_rooms = 0
+        self.game_map.clear_map()
+        self.rooms_list = []
 
         for r in range(max_rooms):
             # random width and height
@@ -66,7 +68,13 @@ class TutorialDungeon:
         # Make interior tiles passable
         for x in range(room.x1 + 1, room.x2):
             for y in range(room.y1 + 1, room.y2):
-                self.game_map.tiles[x][y].block()
+                self.game_map.tiles[x][y].block(False, False)
+        for x in range(room.x1 + 1, room.x2):
+            self.game_map.tiles[x][room.y1].wall = True
+            self.game_map.tiles[x][room.y2].wall = True
+        for y in range(room.y1 + 1, room.y2):
+            self.game_map.tiles[room.x1][y].wall = True
+            self.game_map.tiles[room.x2][y].wall = True
 
     def _generate_corridors(self):
         """
@@ -100,7 +108,9 @@ class TutorialDungeon:
         :param int y: The y position of the tunnel
         """
         for x in range(min(x1, x2), max(x1, x2) + 1):
-            self.game_map.tiles[x][y].block(False)
+            self.game_map.tiles[x][y].block(False, False)
+            self.game_map.tiles[x][y-1].wall = True
+            self.game_map.tiles[x][y+1].wall = True
 
     def _create_v_tunnel(self, y1, y2, x):
         """
@@ -110,7 +120,9 @@ class TutorialDungeon:
         :param int x: X position of the tunnel
         """
         for y in range(min(y1, y2), max(y1, y2) + 1):
-            self.game_map.tiles[x][y].block(False)
+            self.game_map.tiles[x][y].block(False, False)
+            self.game_map.tiles[x-1][y].wall = True
+            self.game_map.tiles[x+1][y].wall = True
 
 
 if __name__ == "__main__":
