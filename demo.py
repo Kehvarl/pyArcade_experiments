@@ -10,6 +10,9 @@ python -m arcade.examples.sprite_starting_template
 import arcade
 import os
 import random
+from game_map.game_map import GameMap
+from tutorial_dungeon.tutorial_dungeon import TutorialDungeon
+
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -31,7 +34,7 @@ class ArcadeDemo(arcade.Window):
     with your own code. Don't leave 'pass' in this program.
     """
 
-    def __init__(self, width, height):
+    def __init__(self, width, height, game_map):
         super().__init__(width, height, "Roguelike Demo", resizable=True)
 
         arcade.set_background_color(arcade.color.BLACK)
@@ -42,6 +45,8 @@ class ArcadeDemo(arcade.Window):
         # as mentioned at the top of this program.
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
+
+        self.game_map = game_map
 
         # If you have sprite lists, you should create them here,
         # and set them to None
@@ -80,7 +85,7 @@ class ArcadeDemo(arcade.Window):
         for y in range(MAZE_HEIGHT):
             for x in range(MAZE_WIDTH):
                 map_tile = arcade.Sprite()
-                if random.randint(1, 2) == 1:
+                if self.game_map.tiles[x][y].block_sight:
                     map_tile.texture = random.choice(self.wall_textures)
                 else:
                     map_tile.texture = random.choice(self.floor_textures)
@@ -145,10 +150,13 @@ class ArcadeDemo(arcade.Window):
 
 def main():
     """ Main method """
-    game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT)
-    game.setup()
-    arcade.run()
+    pass
 
 
 if __name__ == "__main__":
-    main()
+    test_map = GameMap(40, 30)
+    dungeon = TutorialDungeon(test_map)
+    dungeon.generate(max_rooms=10)
+    game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, dungeon.game_map)
+    game.setup()
+    arcade.run()
