@@ -1,11 +1,6 @@
 """
-Starting Template
-
-Once you have learned how to use classes, you can begin your program with this
-template.
-
 If Python and Arcade are installed, this example can be run from the command line with:
-python -m arcade.examples.sprite_starting_template
+python -m demo
 """
 import arcade
 import os
@@ -28,10 +23,6 @@ SPRITE_SIZE = NATIVE_SPRITE_SIZE * SPRITE_SCALING
 class ArcadeDemo(arcade.Window):
     """
     Main application class.
-
-    NOTE: Go ahead and delete the methods you don't need.
-    If you do need a method, delete the 'pass' and replace it
-    with your own code. Don't leave 'pass' in this program.
     """
 
     def __init__(self, width, height, dungeon):
@@ -174,7 +165,7 @@ def main():
 
 if __name__ == "__main__":
     test_map = GameMap(40, 30)
-    dungeon = TutorialDungeon(test_map)
-    game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, dungeon)
+    test_dungeon = TutorialDungeon(test_map)
+    game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, test_dungeon)
     game.setup()
     arcade.run()
