@@ -93,7 +93,7 @@ class ArcadeDemo(arcade.Window):
             for x in range(MAZE_WIDTH):
                 map_tile = arcade.Sprite()
                 if self.dungeon.game_map.tiles[x][y].block_sight:
-                    if self.dungeon.game_map.tiles[x][y].wall:
+                    if self.dungeon.game_map.tiles[x][y].is_wall:
                         map_tile.texture = random.choice(self.wall_textures)
                     else:
                         map_tile.texture = random.choice(self.fill_textures)
