@@ -11,13 +11,13 @@ import arcade
 import os
 import random
 from game_world.level import Level
-
+from game_world.map_factories.game_map_types import GameMapTypes
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-MAZE_WIDTH = 40
-MAZE_HEIGHT = 30
+MAZE_WIDTH = 80
+MAZE_HEIGHT = 60
 
 NATIVE_SPRITE_SIZE = 32
 SPRITE_SCALING = (SCREEN_HEIGHT / MAZE_HEIGHT) / NATIVE_SPRITE_SIZE
@@ -95,7 +95,7 @@ class ArcadeDemo(arcade.Window):
         self._load_map()
 
     def _load_map(self):
-        self.dungeon.generate_map(max_rooms=10)
+        self.dungeon.generate_map()
         self.map_list = arcade.SpriteList()
         for y in range(MAZE_HEIGHT):
             for x in range(MAZE_WIDTH):
@@ -167,7 +167,10 @@ class ArcadeDemo(arcade.Window):
 
 
 if __name__ == "__main__":
-    test_map = Level(40, 30)
+    test_map = Level(MAZE_WIDTH, MAZE_HEIGHT)
+    test_map.map_type = GameMapTypes.SIMPLE
+    test_map.simple_max_rooms = 10
+    test_map.bsp_fill = True
     game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, test_map)
     game.setup()
     arcade.run()
