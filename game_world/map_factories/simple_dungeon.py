@@ -1,10 +1,10 @@
-from game_map.game_map import GameMap
-from game_map.rect import Rect
-
+from game_world.map_factories.dungeon import Dungeon
 from random import randint
+from game_world.rect import Rect
+from game_world.game_map import GameMap
 
 
-class TutorialDungeon:
+class SimpleDungeon(Dungeon):
     """
     Generate a dungeon using the algorithm from the RogueBasin tutorial
     Source: http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python%2Blibtcod,_part_3
@@ -14,53 +14,52 @@ class TutorialDungeon:
         After all rooms added
             connect each room with the previous room using a corridor
     """
-    def __init__(self, game_map):
-        """
-        :param GameMap game_map:
-        """
-        self.game_map = game_map
-        self.width = game_map.width
-        self.height = game_map.height
-        self.game_map.clear_map()
-        self.rooms_list = []
 
-    def generate(self, max_rooms=1, room_min_size=5, room_max_size=10):
+    # noinspection PyMethodOverriding
+    @staticmethod
+    def generate(width, height, max_rooms=1, room_min_size=5, room_max_size=10):
         """
         Create initial Map Layout
+        :return: GameMap:
+        :param width: Width of map in tiles
+        :param height: Height of map in tiles
         :param int max_rooms: Number of rooms to attempt to generate
         :param int room_min_size: Smallest allowable room (width or height)
         :param int room_max_size: Largest allowable room (width or height)
         """
         num_rooms = 0
-        self.game_map.clear_map()
-        self.rooms_list = []
+        rooms_list = []
+        game_map = GameMap(width, height)
+        game_map.clear_map()
 
         for r in range(max_rooms):
             # random width and height
             w = randint(room_min_size, room_max_size)
             h = randint(room_min_size, room_max_size)
             # random position without going out of the boundaries of the map
-            x = randint(0, self.width - w - 1)
-            y = randint(0, self.height - h - 1)
+            x = randint(0, width - w - 1)
+            y = randint(0, height - h - 1)
 
             # Room class stores some useful features
             new_room = Rect(x, y, w, h)
 
             # run through the other rooms and see if they intersect with this one
-            for other_room in self.rooms_list:
+            for other_room in rooms_list:
                 if new_room.intersect(other_room):
                     break
             else:
                 # this means there are no intersections, so this room is valid
                 # "paint" it to the map's tiles
-                self._create_room(new_room)
+                SimpleDungeon._create_room(game_map, new_room)
 
                 # finally, append the new room to the list
-                self.rooms_list.append(new_room)
+                rooms_list.append(new_room)
                 num_rooms += 1
-        self._generate_corridors()
+        SimpleDungeon._generate_corridors(rooms_list, game_map)
+        return game_map
 
-    def _create_room(self, room):
+    @staticmethod
+    def _create_room(game_map, room):
         """
         Set the tiles of a room to be passable
         :param Map.room.Room room: The room in the map
@@ -68,21 +67,22 @@ class TutorialDungeon:
         # Make interior tiles passable
         for x in range(room.x1 + 1, room.x2):
             for y in range(room.y1 + 1, room.y2):
-                self.game_map.tiles[x][y].block(False, False)
+                game_map.tiles[x][y].block(False, False)
         for x in range(room.x1 + 1, room.x2):
-            self.game_map.tiles[x][room.y1].wall = True
-            self.game_map.tiles[x][room.y2].wall = True
+            game_map.tiles[x][room.y1].wall = True
+            game_map.tiles[x][room.y2].wall = True
         for y in range(room.y1 + 1, room.y2):
-            self.game_map.tiles[room.x1][y].wall = True
-            self.game_map.tiles[room.x2][y].wall = True
+            game_map.tiles[room.x1][y].wall = True
+            game_map.tiles[room.x2][y].wall = True
 
-    def _generate_corridors(self):
+    @staticmethod
+    def _generate_corridors(rooms_list, game_map):
         """
         Add connecting corridors between rooms
         """
         first_room = True
         new_x, new_y = 0, 0
-        for room in self.rooms_list:
+        for room in rooms_list:
             if first_room:
                 first_room = False
                 new_x, new_y = room.center()
@@ -92,15 +92,16 @@ class TutorialDungeon:
                 # Randomly determine corridor arrangement.
                 if randint(0, 1) == 1:
                     # Horizontal tunnel, then Vertical
-                    self._create_h_tunnel(prev_x, new_x, prev_y)
-                    self._create_v_tunnel(prev_y, new_y, new_x)
+                    SimpleDungeon._create_h_tunnel(game_map, prev_x, new_x, prev_y)
+                    SimpleDungeon._create_v_tunnel(game_map, prev_y, new_y, new_x)
                 else:
                     # Vertical tunnel, then Horizontal
-                    self._create_v_tunnel(prev_y, new_y, prev_x)
-                    self._create_h_tunnel(prev_x, new_x, new_y)
+                    SimpleDungeon._create_v_tunnel(game_map, prev_y, new_y, prev_x)
+                    SimpleDungeon._create_h_tunnel(game_map, prev_x, new_x, new_y)
                 pass
 
-    def _create_h_tunnel(self, x1, x2, y):
+    @staticmethod
+    def _create_h_tunnel(game_map, x1, x2, y):
         """
         Create a tunnel
         :param int x1: Start of Tunnel
@@ -108,11 +109,12 @@ class TutorialDungeon:
         :param int y: The y position of the tunnel
         """
         for x in range(min(x1, x2), max(x1, x2) + 1):
-            self.game_map.tiles[x][y].block(False, False)
-            self.game_map.tiles[x][y-1].wall = True
-            self.game_map.tiles[x][y+1].wall = True
+            game_map.tiles[x][y].block(False, False)
+            game_map.tiles[x][y-1].wall = True
+            game_map.tiles[x][y+1].wall = True
 
-    def _create_v_tunnel(self, y1, y2, x):
+    @staticmethod
+    def _create_v_tunnel(game_map, y1, y2, x):
         """
         Create a vertical tunnel
         :param int y1: Start of Tunnel
@@ -120,13 +122,11 @@ class TutorialDungeon:
         :param int x: X position of the tunnel
         """
         for y in range(min(y1, y2), max(y1, y2) + 1):
-            self.game_map.tiles[x][y].block(False, False)
-            self.game_map.tiles[x-1][y].wall = True
-            self.game_map.tiles[x+1][y].wall = True
+            game_map.tiles[x][y].block(False, False)
+            game_map.tiles[x-1][y].wall = True
+            game_map.tiles[x+1][y].wall = True
 
 
 if __name__ == "__main__":
-    test_map = GameMap(80, 25)
-    dungeon = TutorialDungeon(test_map)
-    dungeon.generate(max_rooms=10)
-    print(dungeon.game_map.printable_map())
+    dungeon = SimpleDungeon.generate(40, 11, 3, 3, 9)
+    print(dungeon.printable_map())

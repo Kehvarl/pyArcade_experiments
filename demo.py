@@ -10,8 +10,7 @@ python -m arcade.examples.sprite_starting_template
 import arcade
 import os
 import random
-from game_map.game_map import GameMap
-from tutorial_dungeon.tutorial_dungeon import TutorialDungeon
+from game_world.level import Level
 
 
 SCREEN_WIDTH = 800
@@ -96,7 +95,7 @@ class ArcadeDemo(arcade.Window):
         self._load_map()
 
     def _load_map(self):
-        self.dungeon.generate(max_rooms=10)
+        self.dungeon.generate_map(max_rooms=10)
         self.map_list = arcade.SpriteList()
         for y in range(MAZE_HEIGHT):
             for x in range(MAZE_WIDTH):
@@ -167,14 +166,8 @@ class ArcadeDemo(arcade.Window):
         self._load_map()
 
 
-def main():
-    """ Main method """
-    pass
-
-
 if __name__ == "__main__":
-    test_map = GameMap(40, 30)
-    dungeon = TutorialDungeon(test_map)
-    game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, dungeon)
+    test_map = Level(40, 30)
+    game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, test_map)
     game.setup()
     arcade.run()
