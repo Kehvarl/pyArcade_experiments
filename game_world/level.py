@@ -21,10 +21,10 @@ class Level:
         self.dungeon_level = dungeon_level
         self.game_map = None
         self.player = None
+
         self.map_type = GameMapTypes.BSP
         self.bsp_fill = False
         self.simple_max_rooms = 5
-        self.generate_map()
 
     def generate_map(self):
         if self.map_type == GameMapTypes.BSP:
