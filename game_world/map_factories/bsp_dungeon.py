@@ -1,6 +1,6 @@
 from random import randint
 from game_world.game_map import GameMap
-from game_world.map_factories.bsp.bsp_leaf import Leaf
+from game_world.map_factories.bsp_components.bsp_leaf import Leaf
 from game_world.map_factories.dungeon import Dungeon
 
 

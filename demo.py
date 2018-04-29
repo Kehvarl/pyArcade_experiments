@@ -16,8 +16,8 @@ from game_world.map_factories.game_map_types import GameMapTypes
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-MAZE_WIDTH = 80
-MAZE_HEIGHT = 60
+MAZE_WIDTH = 40
+MAZE_HEIGHT = 30
 
 NATIVE_SPRITE_SIZE = 32
 SPRITE_SCALING = (SCREEN_HEIGHT / MAZE_HEIGHT) / NATIVE_SPRITE_SIZE
@@ -168,9 +168,9 @@ class ArcadeDemo(arcade.Window):
 
 if __name__ == "__main__":
     test_map = Level(MAZE_WIDTH, MAZE_HEIGHT)
-    test_map.map_type = GameMapTypes.SIMPLE
+    test_map.map_type = GameMapTypes.BSP
     test_map.simple_max_rooms = 10
-    test_map.bsp_fill = True
+    test_map.bsp_fill = False
     game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, test_map)
     game.setup()
     arcade.run()

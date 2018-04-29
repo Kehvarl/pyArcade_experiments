@@ -1,6 +1,6 @@
-from game_world.map_factories.bsp.bsp_dungeon import BSPDungeon
-from game_world.map_factories.simple_dungeon import SimpleDungeon
+from game_world.map_factories.bsp_dungeon import BSPDungeon
 from game_world.map_factories.game_map_types import GameMapTypes
+from game_world.map_factories.simple_dungeon import SimpleDungeon
 
 
 class Level:
