@@ -133,8 +133,6 @@ class ArcadeDemo(arcade.Window):
 
         # Call draw() on all your sprite lists below
         self.map_list.draw()
-        self.player.center_x = self.dungeon.player.x * SPRITE_SIZE + SPRITE_SIZE / 2
-        self.player.center_y = self.dungeon.player.y * SPRITE_SIZE + SPRITE_SIZE / 2
         self.player.draw()
 
     def update(self, delta_time):
@@ -143,7 +141,9 @@ class ArcadeDemo(arcade.Window):
         Normally, you'll call update() on the sprite lists that
         need it.
         """
-        pass
+        self.dungeon.move(self.dungeon.player)
+        self.player.center_x = self.dungeon.player.x * SPRITE_SIZE + SPRITE_SIZE / 2
+        self.player.center_y = self.dungeon.player.y * SPRITE_SIZE + SPRITE_SIZE / 2
 
     def on_key_press(self, key, key_modifiers):
         """
@@ -152,13 +152,23 @@ class ArcadeDemo(arcade.Window):
         For a full list of keys, see:
         http://arcade.academy/arcade.color.html
         """
-        pass
+        if key == arcade.key.LEFT:
+            self.dungeon.player.dx = -1
+        if key == arcade.key.RIGHT:
+            self.dungeon.player.dx = 1
+        if key == arcade.key.UP:
+            self.dungeon.player.dy = 1
+        if key == arcade.key.DOWN:
+            self.dungeon.player.dy = -1
 
     def on_key_release(self, key, key_modifiers):
         """
         Called whenever the user lets off a previously pressed key.
         """
-        pass
+        if key == arcade.key.LEFT or key == arcade.key.RIGHT:
+            self.dungeon.player.dx = 0
+        if key == arcade.key.UP or key == arcade.key.DOWN:
+            self.dungeon.player.dy = 0
 
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         """

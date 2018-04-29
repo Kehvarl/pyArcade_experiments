@@ -32,3 +32,12 @@ class Level:
             self.game_map = BSPDungeon.generate(self.width, self.height, self.bsp_fill)
         elif self.map_type == GameMapTypes.SIMPLE:
             self.game_map = SimpleDungeon.generate(self.width, self.height, self.simple_max_rooms)
+
+    def move(self, entity):
+        x = entity.x
+        y = entity.y
+        dx = entity.dx
+        dy = entity.dy
+        if not self.game_map.tiles[x+dx][y+dy].block_move:
+            entity.x += dx
+            entity.y += dy
