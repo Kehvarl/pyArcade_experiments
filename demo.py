@@ -7,11 +7,14 @@ template.
 If Python and Arcade are installed, this example can be run from the command line with:
 python -m arcade.examples.sprite_starting_template
 """
-import arcade
 import os
 import random
+
+import arcade
+
+from game_world.game_map.map_factories.game_map_types import GameMapTypes
 from game_world.level import Level
-from game_world.map_factories.game_map_types import GameMapTypes
+from game_world.entity import Entity
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -50,9 +53,11 @@ class ArcadeDemo(arcade.Window):
         # If you have sprite lists, you should create them here,
         # and set them to None
         self.map_list = None
+        self.player = None
         self.wall_textures = None
         self.fill_textures = None
         self.floor_textures = None
+        self.player_texture = None
 
     def setup(self):
         # Create your sprites and sprite lists here
@@ -92,10 +97,15 @@ class ArcadeDemo(arcade.Window):
         self.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_14.png",
                                                        scale=SPRITE_SCALING))
 
+        self.player = arcade.Sprite("tileset/elf_male.png",
+                                    scale=SPRITE_SCALING)
+
         self._load_map()
 
     def _load_map(self):
         self.dungeon.generate_map()
+        self.dungeon.player.x = self.dungeon.game_map.start_x
+        self.dungeon.player.y = self.dungeon.game_map.start_y
         self.map_list = arcade.SpriteList()
         for y in range(MAZE_HEIGHT):
             for x in range(MAZE_WIDTH):
@@ -123,6 +133,9 @@ class ArcadeDemo(arcade.Window):
 
         # Call draw() on all your sprite lists below
         self.map_list.draw()
+        self.player.center_x = self.dungeon.player.x * SPRITE_SIZE + SPRITE_SIZE / 2
+        self.player.center_y = self.dungeon.player.y * SPRITE_SIZE + SPRITE_SIZE / 2
+        self.player.draw()
 
     def update(self, delta_time):
         """
@@ -168,9 +181,10 @@ class ArcadeDemo(arcade.Window):
 
 if __name__ == "__main__":
     test_map = Level(MAZE_WIDTH, MAZE_HEIGHT)
-    test_map.map_type = GameMapTypes.BSP
+    test_map.map_type = GameMapTypes.SIMPLE
     test_map.simple_max_rooms = 10
     test_map.bsp_fill = False
+    test_map.player = Entity(0, 0, None, "Player", False)
     game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, test_map)
     game.setup()
     arcade.run()

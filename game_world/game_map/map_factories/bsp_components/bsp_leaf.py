@@ -1,5 +1,6 @@
 from random import random, randint
-from game_world.rect import Rect
+
+from game_world.game_map.rect import Rect
 
 
 class Leaf:

@@ -1,4 +1,4 @@
-from game_world.tile import Tile
+from game_world.game_map.tile import Tile
 
 
 class GameMap:
@@ -11,6 +11,8 @@ class GameMap:
         self.width = width
         self.height = height
         self.tiles = None
+        self.start_x = None
+        self.start_y = None
 
     def clear_map(self, default_block_move=True, default_block_sight=True):
         """

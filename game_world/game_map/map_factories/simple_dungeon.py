@@ -1,7 +1,9 @@
-from game_world.map_factories.dungeon import Dungeon
 from random import randint
-from game_world.rect import Rect
-from game_world.game_map import GameMap
+
+from game_world.game_map.rect import Rect
+
+from game_world.game_map.game_map import GameMap
+from game_world.game_map.map_factories.dungeon import Dungeon
 
 
 class SimpleDungeon(Dungeon):
@@ -51,6 +53,10 @@ class SimpleDungeon(Dungeon):
                 # this means there are no intersections, so this room is valid
                 # "paint" it to the map's tiles
                 SimpleDungeon._create_room(game_map, new_room)
+
+                # if this is the first room, set the start_x and start_y
+                if num_rooms == 0:
+                    game_map.start_x, game_map.start_y = new_room.center()
 
                 # finally, append the new room to the list
                 rooms_list.append(new_room)

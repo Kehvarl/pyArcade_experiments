@@ -1,7 +1,9 @@
 from random import randint
-from game_world.game_map import GameMap
-from game_world.map_factories.bsp_components.bsp_leaf import Leaf
-from game_world.map_factories.dungeon import Dungeon
+
+from game_world.game_map.map_factories.dungeon import Dungeon
+
+from game_world.game_map.game_map import GameMap
+from game_world.game_map.map_factories.bsp_components.bsp_leaf import Leaf
 
 
 class BSPDungeon(Dungeon):
@@ -27,6 +29,7 @@ class BSPDungeon(Dungeon):
         BSPDungeon._split(root)
         BSPDungeon._generate_rooms(game_map, root, rooms_list, fill)
         BSPDungeon._generate_corridors(game_map, rooms_list)
+        game_map.start_x, game_map.start_y = rooms_list[0].center()
         return game_map
 
     @staticmethod
