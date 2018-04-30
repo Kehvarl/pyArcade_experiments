@@ -30,7 +30,6 @@ class SimpleDungeon(Dungeon):
         :param int room_max_size: Largest allowable room (width or height)
         """
         num_rooms = 0
-        rooms_list = []
         game_map = GameMap(width, height)
         game_map.clear_map()
 
@@ -46,7 +45,7 @@ class SimpleDungeon(Dungeon):
             new_room = Rect(x, y, w, h)
 
             # run through the other rooms and see if they intersect with this one
-            for other_room in rooms_list:
+            for other_room in game_map.rooms:
                 if new_room.intersect(other_room):
                     break
             else:
@@ -59,9 +58,9 @@ class SimpleDungeon(Dungeon):
                     game_map.start_x, game_map.start_y = new_room.center()
 
                 # finally, append the new room to the list
-                rooms_list.append(new_room)
+                game_map.rooms.append(new_room)
                 num_rooms += 1
-        SimpleDungeon._generate_corridors(rooms_list, game_map)
+        SimpleDungeon._generate_corridors(game_map.rooms, game_map)
         return game_map
 
     @staticmethod

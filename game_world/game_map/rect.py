@@ -1,3 +1,6 @@
+from random import randint
+
+
 class Rect:
     """
     A rectangular space
@@ -34,3 +37,12 @@ class Rect:
         center_x = int((self.x1 + self.x2) / 2)
         center_y = int((self.y1 + self.y2) / 2)
         return center_x, center_y
+
+    def random_point(self):
+        """
+        Get a random point within the room
+        :return int, int: x position, y position
+        """
+        x = randint(self.x1+1, self.x2-1)
+        y = randint(self.y1+1, self.y2-1)
+        return x, y

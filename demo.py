@@ -53,11 +53,12 @@ class ArcadeDemo(arcade.Window):
         # If you have sprite lists, you should create them here,
         # and set them to None
         self.map_list = None
+        self.monster_list = None
         self.player = None
         self.wall_textures = None
         self.fill_textures = None
         self.floor_textures = None
-        self.player_texture = None
+        self.kobold_texture = None
 
     def setup(self):
         # Create your sprites and sprite lists here
@@ -97,6 +98,9 @@ class ArcadeDemo(arcade.Window):
         self.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_14.png",
                                                        scale=SPRITE_SCALING))
 
+        self.kobold_texture = arcade.load_texture(file_name="tileset/orc_new.png",
+                                                  scale=SPRITE_SCALING)
+
         self.player = arcade.Sprite("tileset/elf_male.png",
                                     scale=SPRITE_SCALING)
 
@@ -104,8 +108,19 @@ class ArcadeDemo(arcade.Window):
 
     def _load_map(self):
         self.dungeon.generate_map()
+        self.dungeon.populate_map()
         self.dungeon.player.x = self.dungeon.game_map.start_x
         self.dungeon.player.y = self.dungeon.game_map.start_y
+
+        self.monster_list = arcade.SpriteList()
+        for entity in self.dungeon.entities:
+            monster = arcade.Sprite()
+            monster.texture = self.kobold_texture
+            monster.center_x = entity.x * SPRITE_SIZE + SPRITE_SIZE / 2
+            monster.center_y = entity.y * SPRITE_SIZE + SPRITE_SIZE / 2
+
+            self.monster_list.append(monster)
+
         self.map_list = arcade.SpriteList()
         for y in range(MAZE_HEIGHT):
             for x in range(MAZE_WIDTH):
@@ -133,6 +148,7 @@ class ArcadeDemo(arcade.Window):
 
         # Call draw() on all your sprite lists below
         self.map_list.draw()
+        self.monster_list.draw()
         self.player.draw()
 
     def update(self, delta_time):

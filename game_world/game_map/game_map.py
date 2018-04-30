@@ -1,4 +1,6 @@
 from game_world.game_map.tile import Tile
+from game_world.game_map.rect import Rect
+from random import choice
 
 
 class GameMap:
@@ -11,6 +13,7 @@ class GameMap:
         self.width = width
         self.height = height
         self.tiles = None
+        self.rooms = []
         self.start_x = None
         self.start_y = None
 
@@ -35,13 +38,20 @@ class GameMap:
         """
         return 0 < x < self.width - 1 and 0 < y < self.height - 1
 
-    def room_in_map(self, room):
+    def room_fits_in_map(self, room):
         """
         Checks if a given room fits completely on the map
         :param room:
         :return: True if desired location is within map bounds
         """
         return self.point_in_map(room.x1, room.y1) and self.point_in_map(room.x2, room.y2)
+
+    def random_room(self):
+        """
+        Select a random Room (Rect) from the map
+        :return Rect: A Room
+        """
+        return choice(self.rooms)
 
     def printable_map(self, block_char="#", open_char="."):
         """

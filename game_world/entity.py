@@ -1,5 +1,5 @@
 class Entity:
-    def __init__(self, x, y, sprite, name, blocks=False):
+    def __init__(self, x, y, name="default", sprite=None, blocks=False):
         self.x = x
         self.y = y
         self.dx = 0

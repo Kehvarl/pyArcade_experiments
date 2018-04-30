@@ -21,15 +21,14 @@ class BSPDungeon(Dungeon):
     # noinspection PyMethodOverriding
     @staticmethod
     def generate(width, height, fill=False):
-        rooms_list = []
         root = BSPDungeon._init_tree(width, height)
         game_map = GameMap(width, height)
         game_map.clear_map()
 
         BSPDungeon._split(root)
-        BSPDungeon._generate_rooms(game_map, root, rooms_list, fill)
-        BSPDungeon._generate_corridors(game_map, rooms_list)
-        game_map.start_x, game_map.start_y = rooms_list[0].center()
+        BSPDungeon._generate_rooms(game_map, root, game_map.rooms, fill)
+        BSPDungeon._generate_corridors(game_map, game_map.rooms)
+        game_map.start_x, game_map.start_y = game_map.rooms[0].center()
         return game_map
 
     @staticmethod
