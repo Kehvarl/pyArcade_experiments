@@ -66,6 +66,7 @@ class BSPDungeon(Dungeon):
                 for y in range(room.y1, room.y2):
                     if x == room.x1 or x == room.x2 - 1 or y == room.y1 or y == room.y2 - 1:
                         game_map.tiles[x][y].block(True)
+                        game_map.tiles[x][y].wall = True
                     else:
                         game_map.tiles[x][y].block(False)
 
@@ -103,6 +104,8 @@ class BSPDungeon(Dungeon):
         """
         for x in range(min(x1, x2), max(x1, x2) + 1):
             game_map.tiles[x][y].block(False)
+            game_map.tiles[x][y-1].wall = True
+            game_map.tiles[x][y+1].wall = True
 
     @staticmethod
     def _create_v_tunnel(game_map, y1, y2, x):
@@ -114,6 +117,8 @@ class BSPDungeon(Dungeon):
         """
         for y in range(min(y1, y2), max(y1, y2) + 1):
             game_map.tiles[x][y].block(False)
+            game_map.tiles[x-1][y].wall = True
+            game_map.tiles[x+1][y].wall = True
 
 
 if __name__ == "__main__":

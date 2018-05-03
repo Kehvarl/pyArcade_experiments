@@ -207,9 +207,9 @@ class ArcadeDemo(arcade.Window):
 
 if __name__ == "__main__":
     test_map = Level(MAZE_WIDTH, MAZE_HEIGHT)
-    test_map.map_type = GameMapTypes.SIMPLE
+    test_map.map_type = GameMapTypes.BSP
     test_map.simple_max_rooms = 10
-    test_map.bsp_fill = False
+    test_map.bsp_fill = True
     test_map.player = Entity(0, 0, None, "Player", False)
     game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, test_map)
     game.setup()
