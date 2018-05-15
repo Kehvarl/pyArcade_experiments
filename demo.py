@@ -101,8 +101,8 @@ class ArcadeDemo(arcade.Window):
         self.kobold_texture = arcade.load_texture(file_name="tileset/orc_new.png",
                                                   scale=SPRITE_SCALING)
 
-        self.player = arcade.Sprite("tileset/elf_male.png",
-                                    scale=SPRITE_SCALING)
+        # self.player = arcade.Sprite("tileset/elf_male.png",
+        #                             scale=SPRITE_SCALING)
 
         self._load_map()
 
@@ -112,14 +112,14 @@ class ArcadeDemo(arcade.Window):
         self.dungeon.player.x = self.dungeon.game_map.start_x
         self.dungeon.player.y = self.dungeon.game_map.start_y
 
-        self.monster_list = arcade.SpriteList()
-        for entity in self.dungeon.entities:
-            monster = arcade.Sprite()
-            monster.texture = self.kobold_texture
-            monster.center_x = entity.x * SPRITE_SIZE + SPRITE_SIZE / 2
-            monster.center_y = entity.y * SPRITE_SIZE + SPRITE_SIZE / 2
-
-            self.monster_list.append(monster)
+#        self.monster_list = arcade.SpriteList()
+#        for entity in self.dungeon.entities:
+#            monster = arcade.Sprite()
+#            monster.texture = self.kobold_texture
+#            monster.center_x = entity.x * SPRITE_SIZE + SPRITE_SIZE / 2
+#            monster.center_y = entity.y * SPRITE_SIZE + SPRITE_SIZE / 2
+#
+#            self.monster_list.append(monster)
 
         self.map_list = arcade.SpriteList()
         for y in range(MAZE_HEIGHT):
@@ -148,8 +148,9 @@ class ArcadeDemo(arcade.Window):
 
         # Call draw() on all your sprite lists below
         self.map_list.draw()
-        self.monster_list.draw()
-        self.player.draw()
+        # self.monster_list.draw()
+        self.dungeon.player.draw()
+        # self.player.draw()
 
     def update(self, delta_time):
         """
@@ -158,8 +159,7 @@ class ArcadeDemo(arcade.Window):
         need it.
         """
         self.dungeon.move(self.dungeon.player)
-        self.player.center_x = self.dungeon.player.x * SPRITE_SIZE + SPRITE_SIZE / 2
-        self.player.center_y = self.dungeon.player.y * SPRITE_SIZE + SPRITE_SIZE / 2
+        self.dungeon.player.update()
 
     def on_key_press(self, key, key_modifiers):
         """
@@ -210,7 +210,9 @@ if __name__ == "__main__":
     test_map.map_type = GameMapTypes.BSP
     test_map.simple_max_rooms = 10
     test_map.bsp_fill = True
-    test_map.player = Entity(0, 0, None, "Player", False)
+    # test_map.player = Entity(0, 0, None, "Player", False)
+    test_map.player = Entity(0, 0, "Player", False, SPRITE_SIZE, "tileset/elf_male.png",
+                             SPRITE_SCALING)
     game = ArcadeDemo(SCREEN_WIDTH, SCREEN_HEIGHT, test_map)
     game.setup()
     arcade.run()
