@@ -8,7 +8,7 @@ If Python and Arcade are installed, this example can be run from the command lin
 python -m arcade.examples.sprite_starting_template
 """
 import os
-import random
+# import random
 
 import arcade
 
@@ -62,41 +62,41 @@ class ArcadeDemo(arcade.Window):
 
     def setup(self):
         # Create your sprites and sprite lists here
-        self.map_list = arcade.SpriteList()
+        self.dungeon.map_tile_list = arcade.SpriteList()
 
-        self.wall_textures = []
-        self.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_0.png",
-                                                      scale=SPRITE_SCALING))
-        self.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_1.png",
-                                                      scale=SPRITE_SCALING))
-        self.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_2.png",
-                                                      scale=SPRITE_SCALING))
-        self.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_3.png",
-                                                      scale=SPRITE_SCALING))
-        self.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_4.png",
-                                                      scale=SPRITE_SCALING))
+        self.dungeon.wall_textures = []
+        self.dungeon.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_0.png",
+                                                              scale=SPRITE_SCALING))
+        self.dungeon.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_1.png",
+                                                              scale=SPRITE_SCALING))
+        self.dungeon.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_2.png",
+                                                              scale=SPRITE_SCALING))
+        self.dungeon.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_3.png",
+                                                              scale=SPRITE_SCALING))
+        self.dungeon.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_4.png",
+                                                              scale=SPRITE_SCALING))
 
-        self.fill_textures = []
-        self.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_0.png",
-                                                      scale=SPRITE_SCALING))
-        self.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_1.png",
-                                                      scale=SPRITE_SCALING))
-        self.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_2.png",
-                                                      scale=SPRITE_SCALING))
-        self.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_3.png",
-                                                      scale=SPRITE_SCALING))
+        self.dungeon.fill_textures = []
+        self.dungeon.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_0.png",
+                                                              scale=SPRITE_SCALING))
+        self.dungeon.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_1.png",
+                                                              scale=SPRITE_SCALING))
+        self.dungeon.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_2.png",
+                                                              scale=SPRITE_SCALING))
+        self.dungeon.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_3.png",
+                                                              scale=SPRITE_SCALING))
 
-        self.floor_textures = []
-        self.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_10.png",
-                                                       scale=SPRITE_SCALING))
-        self.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_11.png",
-                                                       scale=SPRITE_SCALING))
-        self.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_12.png",
-                                                       scale=SPRITE_SCALING))
-        self.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_13.png",
-                                                       scale=SPRITE_SCALING))
-        self.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_14.png",
-                                                       scale=SPRITE_SCALING))
+        self.dungeon.floor_textures = []
+        self.dungeon.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_10.png",
+                                                               scale=SPRITE_SCALING))
+        self.dungeon.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_11.png",
+                                                               scale=SPRITE_SCALING))
+        self.dungeon.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_12.png",
+                                                               scale=SPRITE_SCALING))
+        self.dungeon.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_13.png",
+                                                               scale=SPRITE_SCALING))
+        self.dungeon.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_14.png",
+                                                               scale=SPRITE_SCALING))
 
         self.kobold_texture = arcade.load_texture(file_name="tileset/orc_new.png",
                                                   scale=SPRITE_SCALING)
@@ -112,30 +112,14 @@ class ArcadeDemo(arcade.Window):
         self.dungeon.player.x = self.dungeon.game_map.start_x
         self.dungeon.player.y = self.dungeon.game_map.start_y
 
-#        self.monster_list = arcade.SpriteList()
-#        for entity in self.dungeon.entities:
-#            monster = arcade.Sprite()
-#            monster.texture = self.kobold_texture
-#            monster.center_x = entity.x * SPRITE_SIZE + SPRITE_SIZE / 2
-#            monster.center_y = entity.y * SPRITE_SIZE + SPRITE_SIZE / 2
-#
-#            self.monster_list.append(monster)
-
-        self.map_list = arcade.SpriteList()
-        for y in range(MAZE_HEIGHT):
-            for x in range(MAZE_WIDTH):
-                map_tile = arcade.Sprite()
-                if self.dungeon.game_map.tiles[x][y].block_sight:
-                    if self.dungeon.game_map.tiles[x][y].wall:
-                        map_tile.texture = random.choice(self.wall_textures)
-                    else:
-                        map_tile.texture = random.choice(self.fill_textures)
-                else:
-                    map_tile.texture = random.choice(self.floor_textures)
-                map_tile.center_x = x * SPRITE_SIZE + SPRITE_SIZE / 2
-                map_tile.center_y = y * SPRITE_SIZE + SPRITE_SIZE / 2
-
-                self.map_list.append(map_tile)
+    #        self.monster_list = arcade.SpriteList()
+    #        for entity in self.dungeon.entities:
+    #            monster = arcade.Sprite()
+    #            monster.texture = self.kobold_texture
+    #            monster.center_x = entity.x * SPRITE_SIZE + SPRITE_SIZE / 2
+    #            monster.center_y = entity.y * SPRITE_SIZE + SPRITE_SIZE / 2
+    #
+    #            self.monster_list.append(monster)
 
     def on_draw(self):
         """
@@ -147,7 +131,7 @@ class ArcadeDemo(arcade.Window):
         arcade.start_render()
 
         # Call draw() on all your sprite lists below
-        self.map_list.draw()
+        self.dungeon.map_tile_list.draw()
         # self.monster_list.draw()
         self.dungeon.player.draw()
         # self.player.draw()
@@ -206,7 +190,7 @@ class ArcadeDemo(arcade.Window):
 
 
 if __name__ == "__main__":
-    test_map = Level(MAZE_WIDTH, MAZE_HEIGHT)
+    test_map = Level(MAZE_WIDTH, MAZE_HEIGHT, 1, SPRITE_SIZE)
     test_map.map_type = GameMapTypes.BSP
     test_map.simple_max_rooms = 10
     test_map.bsp_fill = True
