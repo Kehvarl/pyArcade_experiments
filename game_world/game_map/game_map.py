@@ -1,5 +1,4 @@
 from game_world.game_map.tile import Tile
-from game_world.game_map.rect import Rect
 from random import choice
 
 

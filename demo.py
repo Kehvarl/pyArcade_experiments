@@ -1,11 +1,5 @@
 """
 Starting Template
-
-Once you have learned how to use classes, you can begin your program with this
-template.
-
-If Python and Arcade are installed, this example can be run from the command line with:
-python -m arcade.examples.sprite_starting_template
 """
 import os
 # import random
@@ -27,6 +21,7 @@ SPRITE_SCALING = (SCREEN_HEIGHT / MAZE_HEIGHT) / NATIVE_SPRITE_SIZE
 SPRITE_SIZE = NATIVE_SPRITE_SIZE * SPRITE_SCALING
 
 
+# noinspection PyAbstractClass
 class ArcadeDemo(arcade.Window):
     """
     Main application class.
@@ -52,12 +47,6 @@ class ArcadeDemo(arcade.Window):
 
         # If you have sprite lists, you should create them here,
         # and set them to None
-        self.map_list = None
-        self.monster_list = None
-        self.player = None
-        self.wall_textures = None
-        self.fill_textures = None
-        self.floor_textures = None
         self.kobold_texture = None
 
     def setup(self):
@@ -101,9 +90,6 @@ class ArcadeDemo(arcade.Window):
         self.kobold_texture = arcade.load_texture(file_name="tileset/orc_new.png",
                                                   scale=SPRITE_SCALING)
 
-        # self.player = arcade.Sprite("tileset/elf_male.png",
-        #                             scale=SPRITE_SCALING)
-
         self._load_map()
 
     def _load_map(self):
@@ -111,15 +97,6 @@ class ArcadeDemo(arcade.Window):
         self.dungeon.populate_map()
         self.dungeon.player.x = self.dungeon.game_map.start_x
         self.dungeon.player.y = self.dungeon.game_map.start_y
-
-    #        self.monster_list = arcade.SpriteList()
-    #        for entity in self.dungeon.entities:
-    #            monster = arcade.Sprite()
-    #            monster.texture = self.kobold_texture
-    #            monster.center_x = entity.x * SPRITE_SIZE + SPRITE_SIZE / 2
-    #            monster.center_y = entity.y * SPRITE_SIZE + SPRITE_SIZE / 2
-    #
-    #            self.monster_list.append(monster)
 
     def on_draw(self):
         """
@@ -134,7 +111,6 @@ class ArcadeDemo(arcade.Window):
         self.dungeon.map_tile_list.draw()
         # self.monster_list.draw()
         self.dungeon.player.draw()
-        # self.player.draw()
 
     def update(self, delta_time):
         """
@@ -174,6 +150,10 @@ class ArcadeDemo(arcade.Window):
         """
         Called whenever the mouse moves.
         """
+        pass
+
+    def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
+        """ User moves the scroll wheel. """
         pass
 
     def on_mouse_press(self, x, y, button, key_modifiers):

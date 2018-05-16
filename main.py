@@ -16,6 +16,7 @@ SPRITE_SCALING = (SCREEN_HEIGHT / MAZE_HEIGHT) / NATIVE_SPRITE_SIZE
 SPRITE_SIZE = NATIVE_SPRITE_SIZE * SPRITE_SCALING
 
 
+# noinspection PyAbstractClass
 class RoguelikeArcade(arcade.Window):
     """
     """
