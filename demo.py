@@ -2,7 +2,7 @@
 Starting Template
 """
 import os
-# import random
+import json
 
 import arcade
 
@@ -51,45 +51,21 @@ class ArcadeDemo(arcade.Window):
 
     def setup(self):
         # Create your sprites and sprite lists here
-        self.dungeon.map_tile_list = arcade.SpriteList()
+        with open("tileset/tileset.json", "r") as tileset_config:
+            tileset = json.load(tileset_config)
 
-        self.dungeon.wall_textures = []
-        self.dungeon.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_0.png",
-                                                              scale=SPRITE_SCALING))
-        self.dungeon.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_1.png",
-                                                              scale=SPRITE_SCALING))
-        self.dungeon.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_2.png",
-                                                              scale=SPRITE_SCALING))
-        self.dungeon.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_3.png",
-                                                              scale=SPRITE_SCALING))
-        self.dungeon.wall_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/snake_4.png",
-                                                              scale=SPRITE_SCALING))
+        for section, tiles in tileset.items():
+            if not self.dungeon.textures.get("section", False):
+                self.dungeon.textures[section] = []
 
-        self.dungeon.fill_textures = []
-        self.dungeon.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_0.png",
-                                                              scale=SPRITE_SCALING))
-        self.dungeon.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_1.png",
-                                                              scale=SPRITE_SCALING))
-        self.dungeon.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_2.png",
-                                                              scale=SPRITE_SCALING))
-        self.dungeon.fill_textures.append(arcade.load_texture(file_name="tileset/dungeon/wall/stone_dark_3.png",
-                                                              scale=SPRITE_SCALING))
-
-        self.dungeon.floor_textures = []
-        self.dungeon.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_10.png",
-                                                               scale=SPRITE_SCALING))
-        self.dungeon.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_11.png",
-                                                               scale=SPRITE_SCALING))
-        self.dungeon.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_12.png",
-                                                               scale=SPRITE_SCALING))
-        self.dungeon.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_13.png",
-                                                               scale=SPRITE_SCALING))
-        self.dungeon.floor_textures.append(arcade.load_texture(file_name="tileset/dungeon/floor/mosaic_14.png",
-                                                               scale=SPRITE_SCALING))
+            for texture in tiles:
+                self.dungeon.textures[section].append(arcade.load_texture(file_name=texture,
+                                                                          scale=SPRITE_SCALING))
 
         self.kobold_texture = arcade.load_texture(file_name="tileset/orc_new.png",
                                                   scale=SPRITE_SCALING)
 
+        self.dungeon.map_tile_list = arcade.SpriteList()
         self._load_map()
 
     def _load_map(self):

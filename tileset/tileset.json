@@ -1,0 +1,25 @@
+{
+  "wall_tiles":
+  [
+    "tileset/dungeon/wall/snake_0.png",
+    "tileset/dungeon/wall/snake_1.png",
+    "tileset/dungeon/wall/snake_2.png",
+    "tileset/dungeon/wall/snake_3.png",
+    "tileset/dungeon/wall/snake_4.png"
+  ],
+  "fill_tiles":
+  [
+    "tileset/dungeon/wall/stone_dark_0.png",
+    "tileset/dungeon/wall/stone_dark_1.png",
+    "tileset/dungeon/wall/stone_dark_2.png",
+    "tileset/dungeon/wall/stone_dark_3.png"
+  ],
+  "floor_tiles":
+  [
+    "tileset/dungeon/floor/mosaic_10.png",
+    "tileset/dungeon/floor/mosaic_11.png",
+    "tileset/dungeon/floor/mosaic_12.png",
+    "tileset/dungeon/floor/mosaic_13.png",
+    "tileset/dungeon/floor/mosaic_14.png"
+  ]
+}
