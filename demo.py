@@ -85,7 +85,7 @@ class ArcadeDemo(arcade.Window):
 
         # Call draw() on all your sprite lists below
         self.dungeon.map_tile_list.draw()
-        # self.monster_list.draw()
+        self.dungeon.entities.draw()
         self.dungeon.player.draw()
 
     def update(self, delta_time):
@@ -146,7 +146,7 @@ class ArcadeDemo(arcade.Window):
 
 
 if __name__ == "__main__":
-    test_map = Level(MAZE_WIDTH, MAZE_HEIGHT, 1, SPRITE_SIZE)
+    test_map = Level(MAZE_WIDTH, MAZE_HEIGHT, 1, SPRITE_SIZE, SPRITE_SCALING)
     test_map.map_type = GameMapTypes.BSP
     test_map.simple_max_rooms = 10
     test_map.bsp_fill = True

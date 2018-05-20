@@ -35,7 +35,7 @@ class Entity(Sprite):
         :transparent: Set to True if this sprite can be transparent.
         :top: Set/query the sprite location by using the top coordinate. This will be the 'y' of the top of the sprite.
         :texture: `Texture` class with the current texture.
-        :textures: List of textures associated with this sprite.
+        :map_textures: List of map_textures associated with this sprite.
         :velocity: Change in x, y expressed as a list. (0, 0) would be not moving.
     """
 

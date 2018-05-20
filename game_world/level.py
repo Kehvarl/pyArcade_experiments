@@ -12,22 +12,25 @@ class Level:
     All necessary information about the current game level
     """
 
-    def __init__(self, width, height, dungeon_level=1, sprite_size=32):
+    def __init__(self, width, height, dungeon_level=1, sprite_size=32, sprite_scaling=1.0):
         """
         Create a new Level for the Game
         :param width: Width of map in tiles
         :param height: Height of map in tiles
-        :param dungeon_level:
+        :param int dungeon_level: Dungeon depth and difficulty
+        :param sprite_size: height and width (same) for sprites
+        :param float sprite_scaling: scale-factor to resize sprite textures to fit screen
         """
         self.width = width
         self.height = height
         self.dungeon_level = dungeon_level
         self.sprite_size = sprite_size
+        self.sprite_scaling = sprite_scaling
 
         self.game_map = None
         self.player = None
         self.entities = None
-        self.textures = {}
+        self.map_textures = {}
 
         self.map_type = GameMapTypes.BSP
         self.bsp_fill = False
@@ -47,21 +50,22 @@ class Level:
                 map_tile = arcade.Sprite()
                 if self.game_map.tiles[x][y].block_sight:
                     if self.game_map.tiles[x][y].wall:
-                        map_tile.texture = choice(self.textures['wall_tiles'])
+                        map_tile.texture = choice(self.map_textures['wall_tiles'])
                     else:
-                        map_tile.texture = choice(self.textures['fill_tiles'])
+                        map_tile.texture = choice(self.map_textures['fill_tiles'])
                 else:
-                    map_tile.texture = choice(self.textures['floor_tiles'])
+                    map_tile.texture = choice(self.map_textures['floor_tiles'])
                 map_tile.center_x = x * self.sprite_size + self.sprite_size / 2
                 map_tile.center_y = y * self.sprite_size + self.sprite_size / 2
 
                 self.map_tile_list.append(map_tile)
 
     def populate_map(self):
-        self.entities = []
+        self.entities = arcade.SpriteList()
         for e in range(5):
             x, y = self.game_map.random_room().random_point()
-            entity = Entity(x, y, "Orc")
+            entity = Entity(x, y, "Kobold",  False, self.sprite_size, "tileset/kobold_new.png",
+                            self.sprite_scaling)
             self.entities.append(entity)
 
     def update(self):
