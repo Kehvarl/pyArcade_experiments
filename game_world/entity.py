@@ -42,7 +42,7 @@ class Entity(Sprite):
     def __init__(self,
                  x, y,
                  name: str="default",
-                 blocks: bool=False,
+                 block_move: bool=False,
                  sprite_size: float = 32,
                  filename: str=None,
                  scale: float=1,
@@ -56,7 +56,7 @@ class Entity(Sprite):
             x (int): Horizontal Map Position
             y (int): Vertical Map Position
             name (str):  Entity Label
-            blocks (bool): Entity prevents movement through tile
+            block_move (bool): Entity prevents movement through tile
             sprite_size (float): Size of the sprite
             filename (str): Filename of an image that represents the sprite.
             scale (float): Scale the image up or down. Scale of 1.0 is none.
@@ -74,7 +74,7 @@ class Entity(Sprite):
         self.dx = 0
         self.dy = 0
         self.name = name
-        self.blocks = blocks
+        self.block_move = block_move
         self.sprite_size = sprite_size
         super().__init__(filename,
                          scale,

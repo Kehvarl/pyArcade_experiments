@@ -61,12 +61,12 @@ class Level:
                 self.map_tile_list.append(map_tile)
 
     def populate_map(self):
-        self.entities = arcade.SpriteList()
+        self.entities = {}
         for e in range(5):
             x, y = self.game_map.random_room().random_point()
-            entity = Entity(x, y, "Kobold",  False, self.sprite_size, "tileset/kobold_new.png",
+            entity = Entity(x, y, "Kobold", True, self.sprite_size, "tileset/kobold_new.png",
                             self.sprite_scaling)
-            self.entities.append(entity)
+            self.entities[(x, y)] = entity
 
     def update(self):
         for entity in self.entities:
@@ -77,6 +77,8 @@ class Level:
         y = entity.y
         dx = entity.dx
         dy = entity.dy
-        if not self.game_map.tiles[x+dx][y+dy].block_move:
-            entity.x += dx
-            entity.y += dy
+        collision = self.entities.get((x + dx, y + dy), None)
+        if collision is None or not collision.block_move:
+            if not self.game_map.tiles[x + dx][y + dy].block_move:
+                entity.x += dx
+                entity.y += dy

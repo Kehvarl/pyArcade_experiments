@@ -55,12 +55,12 @@ class ArcadeDemo(arcade.Window):
             tileset = json.load(tileset_config)
 
         for section, tiles in tileset.items():
-            if not self.dungeon.textures.get("section", False):
-                self.dungeon.textures[section] = []
+            if not self.dungeon.map_textures.get("section", False):
+                self.dungeon.map_textures[section] = []
 
             for texture in tiles:
-                self.dungeon.textures[section].append(arcade.load_texture(file_name=texture,
-                                                                          scale=SPRITE_SCALING))
+                self.dungeon.map_textures[section].append(arcade.load_texture(file_name=texture,
+                                                                              scale=SPRITE_SCALING))
 
         self.kobold_texture = arcade.load_texture(file_name="tileset/orc_new.png",
                                                   scale=SPRITE_SCALING)
@@ -85,7 +85,9 @@ class ArcadeDemo(arcade.Window):
 
         # Call draw() on all your sprite lists below
         self.dungeon.map_tile_list.draw()
-        self.dungeon.entities.draw()
+        # self.dungeon.entities.draw()
+        for entity in self.dungeon.entities:
+            self.dungeon.entities[entity].draw()
         self.dungeon.player.draw()
 
     def update(self, delta_time):
